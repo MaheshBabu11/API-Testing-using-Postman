@@ -1,0 +1,176 @@
+{
+	"info": {
+		"_postman_id": "901a9912-63b0-4898-8b3c-56ab0b82d144",
+		"name": "Test Spotify",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17419966"
+	},
+	"item": [
+		{
+			"name": "https://accounts.spotify.com/api/token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Extract the desired value from the response\r",
+							"//const response = pm.response.json(); \r",
+							"const desiredValue = pm.response.json().access_token;\r",
+							"\r",
+							"// Set the value as an environment variable\r",
+							"pm.environment.set(\"bearer-token\", desiredValue);\r",
+							"\r",
+							"// Example test script\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response body contains expected data\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.data).to.property(\"access_token\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "87b027a3cdda4ea88869718a99453dc0",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "0adbb18e3be64b0d9731cd23e6034c1f",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "playlist-read-private",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://accounts.spotify.com/api/token",
+					"protocol": "https",
+					"host": [
+						"accounts",
+						"spotify",
+						"com"
+					],
+					"path": [
+						"api",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search spotify",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const desiredValue = pm.response.json().albums.items[0].artists[0].id;\r",
+							"\r",
+							"// Set the value as an environment variable\r",
+							"pm.environment.set(\"artist\", desiredValue);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{bearer-token}}"
+					}
+				],
+				"url": {
+					"raw": "https://api.spotify.com/v1/search?q=ludacris&type=album",
+					"protocol": "https",
+					"host": [
+						"api",
+						"spotify",
+						"com"
+					],
+					"path": [
+						"v1",
+						"search"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "ludacris"
+						},
+						{
+							"key": "type",
+							"value": "album"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get artist album",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{bearer-token}}"
+					}
+				],
+				"url": {
+					"raw": "https://api.spotify.com/v1/artists/{{artist}}/albums",
+					"protocol": "https",
+					"host": [
+						"api",
+						"spotify",
+						"com"
+					],
+					"path": [
+						"v1",
+						"artists",
+						"{{artist}}",
+						"albums"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
