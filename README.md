@@ -232,8 +232,6 @@ Running tests on APIs individually allows us to isolate and examine their functi
 
 Through API testing, we can identify and address bugs early in the development cycle, minimizing the impact on downstream systems and improving overall efficiency. It enables us to focus on the individual components of the API and validate their functionality, reliability, performance, and security.
 
-Link to my Postman workspace: [*Test Spotify](https://api.postman.com/collections/17419966-901a9912-63b0-4898-8b3c-56ab0b82d144?access_key=PMAT-01H4N73V8NAYWSZDMFDM882WE6)*
-
 Happy coding!
 
 
